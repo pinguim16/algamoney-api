@@ -1,14 +1,18 @@
 package com.algamoney.repository.filter;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDate;
 
 public class LancamentoFilter {
 
-    public String descricao;
+    private String descricao;
 
-    public LocalDate dataVencimentoDe;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dataVencimentoDe;
 
-    public LocalDate dataVencimentoAte;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dataVencimentoAte;
 
     public String getDescricao() {
         return descricao;
