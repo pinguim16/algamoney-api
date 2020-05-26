@@ -4,6 +4,7 @@ import com.algamoney.event.RecursoCriadoEvent;
 import com.algamoney.exceptionHandler.AlgamoneyExceptionHandler;
 import com.algamoney.model.Lancamento;
 import com.algamoney.repository.filter.LancamentoFilter;
+import com.algamoney.repository.projection.ResumoLancamento;
 import com.algamoney.service.LancamentoService;
 import com.algamoney.service.exception.PessoaInesxistenteOuInativaException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,14 @@ public class LancamentoResource {
         Page<Lancamento> lancamentos = this.lancamentoService.filtrar(lancamentoFilter, pageable);
         return !lancamentos.isEmpty() ? ResponseEntity.ok(lancamentos) : ResponseEntity.noContent().build();
     }
+
+    @GetMapping(params = "resumo")
+    @PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
+    public ResponseEntity<?> resumir(LancamentoFilter lancamentoFilter, Pageable pageable){
+        Page<ResumoLancamento> lancamentos = this.lancamentoService.resumir(lancamentoFilter, pageable);
+        return !lancamentos.isEmpty() ? ResponseEntity.ok(lancamentos) : ResponseEntity.noContent().build();
+    }
+
 
     @GetMapping("/todos")
     @PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")

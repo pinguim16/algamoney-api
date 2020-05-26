@@ -5,6 +5,7 @@ import com.algamoney.model.Pessoa;
 import com.algamoney.repository.LancamentoRepository;
 import com.algamoney.repository.PessoaRepository;
 import com.algamoney.repository.filter.LancamentoFilter;
+import com.algamoney.repository.projection.ResumoLancamento;
 import com.algamoney.service.exception.PessoaInesxistenteOuInativaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -34,6 +35,10 @@ public class LancamentoService {
 
     public Page<Lancamento> filtrar(LancamentoFilter lancamentoFilter, Pageable pageable){
         return this.lancamentoRepository.filtrar(lancamentoFilter, pageable);
+    }
+
+    public Page<ResumoLancamento> resumir(LancamentoFilter lancamentoFilter, Pageable pageable){
+        return this.lancamentoRepository.resumir(lancamentoFilter, pageable);
     }
 
     public Lancamento saveorUpdate(Lancamento lancamento){
