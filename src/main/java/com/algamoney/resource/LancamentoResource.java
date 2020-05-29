@@ -74,10 +74,14 @@ public class LancamentoResource {
 
     @PostMapping
     @PreAuthorize("hasAuthority('ROLE_CADASTRAR_LANCAMENTO') and #oauth2.hasScope('write')")
-    public ResponseEntity<Lancamento> criar(@Valid @RequestBody Lancamento lancamento, HttpServletResponse response){
+    public ResponseEntity<Lancamento> saveOrUpdate(@Valid @RequestBody Lancamento lancamento, HttpServletResponse response){
         Lancamento lancamentoSalvo = this.lancamentoService.saveorUpdate(lancamento);
         this.publisher.publishEvent(new RecursoCriadoEvent(this, response, lancamentoSalvo.getCodigo()));
-        return ResponseEntity.status(HttpStatus.CREATED).body(lancamentoSalvo);
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(lancamentoSalvo);
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @ExceptionHandler({PessoaInesxistenteOuInativaException.class})
