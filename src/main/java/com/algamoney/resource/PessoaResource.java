@@ -3,9 +3,12 @@ package com.algamoney.resource;
 import com.algamoney.event.RecursoCriadoEvent;
 import com.algamoney.model.Pessoa;
 import com.algamoney.repository.PessoaRepository;
+import com.algamoney.repository.filter.PessoaFilter;
 import com.algamoney.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,11 +32,18 @@ public class PessoaResource {
     @Autowired
     private PessoaService pessoaService;
 
+//    @GetMapping
+//    @PreAuthorize("hasAuthority('ROLE_PESQUISAR_PESSOA') and #oauth2.hasScope('read')")
+//    public ResponseEntity<?> listar(){
+//        List<Pessoa> pessoas = this.pessoaRepository.findAll();
+//        return !pessoas.isEmpty() ? ResponseEntity.ok(pessoas) : ResponseEntity.notFound().build();
+//    }
+
     @GetMapping
     @PreAuthorize("hasAuthority('ROLE_PESQUISAR_PESSOA') and #oauth2.hasScope('read')")
-    public ResponseEntity<?> listar(){
-        List<Pessoa> pessoas = this.pessoaRepository.findAll();
-        return !pessoas.isEmpty() ? ResponseEntity.ok(pessoas) : ResponseEntity.notFound().build();
+    public ResponseEntity<?> pesquisar(PessoaFilter pessoaFilter, Pageable pageable){
+        Page<Pessoa> pessoas = this.pessoaService.filtrar(pessoaFilter, pageable);
+        return !pessoas.isEmpty() ? ResponseEntity.ok(pessoas) : ResponseEntity.noContent().build();
     }
 
     @PostMapping
