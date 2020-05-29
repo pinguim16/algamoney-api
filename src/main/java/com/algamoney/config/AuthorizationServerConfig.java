@@ -20,8 +20,8 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import java.util.Arrays;
 
 @Configuration
-@Profile("oauth-security")
 @EnableAuthorizationServer
+@Profile("oauth-security")
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Autowired
