@@ -59,7 +59,7 @@ public class LancamentoResource {
 
 
     @GetMapping("/todos")
-    @PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
+    //@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
     public ResponseEntity<?> getAll(){
         List<Lancamento> lancamentos = this.lancamentoService.findAll();
         return !lancamentos.isEmpty() ? ResponseEntity.ok(lancamentos) : ResponseEntity.noContent().build();
